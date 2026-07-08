@@ -18,6 +18,7 @@ iwr -useb https://raw.githubusercontent.com/timdevai/proteus/main/install.ps1 | 
 
 | Layer | Count | Purpose |
 |---|---|---|
+| Behavioral spine | 1 | Discipline rules + two-tier memory appended to `CLAUDE.md` — the layer that changes output quality. See [docs/WHY-IT-WORKS.md](docs/WHY-IT-WORKS.md) |
 | Runtime agents | 6 | Event-bus + orchestrator + memory/research/admin/content/code/trading handlers |
 | Agent library | 136 | Curated from [rohitg00/awesome-claude-code-toolkit](https://github.com/rohitg00/awesome-claude-code-toolkit) (Apache 2.0) |
 | Proteus-original skills | 13 | prompt-matcher, skill-matcher, scope-clarifier, cost-tracker, mcp-finder, permission-auditor, context-compactor, decision-recorder, repo-onboarder, prd-builder, pr-reviewer, commit-curator, tdd-flow |
@@ -38,6 +39,18 @@ Three problems most Claude users hit by month two:
 
 Proteus is the answer: persistent agent runtime + curated skill/prompt library + routing brain.
 
+But the library isn't the part that makes Claude behave better — the **behavioral spine** is.
+
+## The behavioral spine (why it actually works)
+
+There's no secret model. The difference between a heavily-configured Claude and a fresh install is a scaffolding stack of five layers — and the library is only two of them. The layers that move output quality are the behavioral ones:
+
+- **Discipline rules** (`claude-md/spine.md`) — terse output, read-once, verify-before-done, surgical edits, no scope creep. Bans the default failure modes. Highest-leverage thing in this repo.
+- **Two-tier memory** — fast per-fact auto-memory + a durable brain vault written with an AI-first rule (`## For future Claude` preambles, wikilinks, supersession markers). Sessions start warm, not cold.
+- **Autonomy hooks** — post-session git sync, pre-tool guards, a harness-enforced `permissions.deny` safety list.
+
+The installer now appends the spine to your `CLAUDE.md` automatically. Full teardown: [docs/WHY-IT-WORKS.md](docs/WHY-IT-WORKS.md).
+
 ## Install
 
 ### One-liner
@@ -54,7 +67,7 @@ The installer:
 1. Clones into `~/.proteus/`
 2. Drops 13 skills into `~/.claude/skills/`
 3. Copies the prompt library to `~/.proteus/_prompts/`
-4. Appends 6 lines to `~/.claude/CLAUDE.md` to wire the auto-matchers
+4. Appends the behavioral spine + auto-matcher wiring to `~/.claude/CLAUDE.md`
 5. Optionally sets your `ANTHROPIC_API_KEY`
 6. Optionally starts the Proteus daemon
 

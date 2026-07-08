@@ -84,6 +84,17 @@ fi
 echo ""
 echo "[3/4] Updating CLAUDE.md..."
 
+# Behavioral spine — discipline rules + two-tier memory. The highest-leverage layer.
+SPINE_SRC="$SCRIPT_DIR/claude-md/spine.md"
+if [[ -f "$SPINE_SRC" ]]; then
+    if [[ -f "$CLAUDE_MD" ]] && grep -q "# Response Rules" "$CLAUDE_MD"; then
+        echo "    CLAUDE.md already has the behavioral spine — skipping."
+    else
+        { echo ""; cat "$SPINE_SRC"; } >> "$CLAUDE_MD"
+        echo "    Added behavioral spine (Response Rules / Tool Efficiency / Execution Quality / Memory)."
+    fi
+fi
+
 PM_BLOCK="
 # Prompt Matcher (always-on)
 - Prompt library: \`$PROMPTS_DIR\`

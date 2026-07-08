@@ -157,6 +157,18 @@ if ($PSScriptRoot -and (Test-Path $SkillMd)) {
 Write-Host ""
 Write-Host "[5/5] Updating CLAUDE.md..." -ForegroundColor Green
 
+# Behavioral spine — discipline rules + two-tier memory. The highest-leverage layer.
+$SpineSrc = Join-Path $PSScriptRoot "claude-md\spine.md"
+if ($PSScriptRoot -and (Test-Path $SpineSrc)) {
+    $spineHas = (Test-Path $ClaudeMd) -and ((Get-Content $ClaudeMd -Raw) -match "# Response Rules")
+    if ($spineHas) {
+        Write-Host "    CLAUDE.md already has the behavioral spine — skipping." -ForegroundColor Gray
+    } else {
+        Add-Content -Path $ClaudeMd -Value ("`r`n" + (Get-Content $SpineSrc -Raw)) -Encoding UTF8
+        Write-Host "    Added behavioral spine (Response Rules / Tool Efficiency / Execution Quality / Memory)." -ForegroundColor Gray
+    }
+}
+
 $pmBlock = @"
 
 # Prompt Matcher (always-on)
