@@ -21,3 +21,14 @@ seo/
 INSTALL_BUGS.md
 GUMROAD_LISTING.md
 _DRAFTS_PROTEUS_LAUNCH/
+PROMO_DRAFTS.md
+*_DRAFTS*.md
+*.patch
+
+# Never ship — secrets and keys, belt-and-suspenders
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+credentials*
+secrets*
